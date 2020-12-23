@@ -19,6 +19,11 @@ const App = () => {
   }
   useEffect(hook, [])
 
+  const handleClick = (event) => {
+    event.preventDefault()
+    setSearch(event.target.value)
+  }
+
   const handleChange = (e) => {
     setSearch(e.target.value)
   }
@@ -26,7 +31,7 @@ const App = () => {
   return (
     <div>
       <Search search={search} handleChange={handleChange} />
-      <CountriesInfo limit={data.length} countries={countries} />
+      <CountriesInfo handleClick={handleClick} limit={data.length} countries={countries} />
     </div>
   )
 }

@@ -1,36 +1,15 @@
 import React from 'react'
+import Country from './Country'
+import Countries from './Countries'
 
-const Country = ({country}) => {
-  const languages = country.languages
-  return(
-    <div>
-      <h1>{country.name}</h1>
-      <div>Capital: {country.capital} </div>
-      <div>Population: {country.population} </div>
-
-      <h2>Languages</h2>
-      <ul>
-        {languages.map(language =>
-          <li key={language.name}> {language.name}</li>)}
-      </ul>
-      <img src={country.flag} alt="flag"/>
-    </div>
-  )
-}
-
-const Countries = ({countries}) => {
-  return(
-    countries.map(country =>
-      <div key={country.name}>
-        {country.name}
-        <button onClick={() => <Country country={country}/>}>show</button>
-      </div>)
-  )
-}
-
-const CountriesInfo = ({ limit, countries }) => {
+const CountriesInfo = ({ handleClick, limit, countries }) => {
   const size = countries.length
   if (limit === size) return (null)
+  else if(countries.length === 0){
+    return(
+      <div>No match found. Please make another search</div>
+    )
+  }
 
   else if(size > 10){
     return (
@@ -40,13 +19,15 @@ const CountriesInfo = ({ limit, countries }) => {
 
   else if(size > 1 && size <= 10){
     return (
-      <Countries countries={countries}/>
+      <Countries countries={countries} handleClick={handleClick}/>
     )
   }
 
   else{
     return (
-      <Country country={countries[0]}/>
+      <div key={countries[0].name}>
+        <Country country={countries[0]}/>
+      </div>
     )
   }
 }
