@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Country = ({country}) => {
+const Country = ({weather, country}) => {
   const languages = country.languages
   return(
     <div>
@@ -18,6 +18,16 @@ const Country = ({country}) => {
         height="200px"
         width="300px"
       />
+      <h2>Weather in {country.capital}</h2>
+      <p><b>Current Time:</b> {weather['current'].observation_time}</p>
+      <p><b>Temperature:</b> {weather['current'].temperature} Celcius</p>
+      <img
+        src={weather['current'].weather_icons}
+        alt="weather_icon"
+        height="100px"
+        width="100px"
+      />
+      <p><b>Wind:</b> {weather['current'].wind_speed} km/hr direction {weather['current'].wind_dir}</p>
     </div>
   )
 }

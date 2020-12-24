@@ -2,7 +2,7 @@ import React from 'react'
 import Country from './Country'
 import Countries from './Countries'
 
-const CountriesInfo = ({ handleClick, limit, countries }) => {
+const CountriesInfo = ({ weather, handleCapital, handleClick, limit, countries }) => {
   const size = countries.length
   if (limit === size) return (null)
   else if(countries.length === 0){
@@ -24,9 +24,13 @@ const CountriesInfo = ({ handleClick, limit, countries }) => {
   }
 
   else{
+    handleCapital(countries[0].capital)
     return (
       <div key={countries[0].name}>
-        <Country country={countries[0]}/>
+        <Country
+          country={countries[0]}
+          weather={weather}
+        />
       </div>
     )
   }
