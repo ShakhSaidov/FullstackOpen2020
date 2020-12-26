@@ -4,11 +4,35 @@ import ContactForm from './components/ContactForm'
 import Contacts from './components/Contacts'
 import contactService from './services/phonebook'
 
+const Message = ({ message, error }) => {
+  if (message === null) {
+    return (
+      null
+    )
+  }
+  else if (error) {
+    return (
+      <div className="error">
+        {message}
+      </div>
+    )
+  }
+  else {
+    return (
+      <div className="non-error">
+        {message}
+      </div>
+    )
+  }
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [message, setMessage] = useState(null)
+  const [error, setError] = useState(false)
 
   const contacts = persons.filter(person =>
     person.name.toLowerCase().includes(newSearch.toLowerCase()))
@@ -36,6 +60,22 @@ const App = () => {
           .update(id, changedPerson)
           .then(returnedPerson => {
             setPersons(persons.map(p => p.id !== id ? p : returnedPerson))
+            setMessage(
+              `New number put for ${newName}`
+            )
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
+          })
+          .catch(error => {
+            setMessage(
+              `Information of '${newName}' has already been removed from server`
+            )
+            setError(true)
+            setTimeout(() => {
+              setMessage(null)
+              setError(false)
+            }, 5000)
           })
       }
     } else {
@@ -50,6 +90,22 @@ const App = () => {
           setPersons(persons.concat(nameObject))
           setNewName('')
           setNewNumber('')
+          setMessage(
+            `Added ${newName} to the phonebook`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setMessage(
+            `Information of '${newName}' has already been removed from server`
+          )
+          setError(true)
+          setTimeout(() => {
+            setMessage(null)
+            setError(false)
+          }, 5000)
         })
     }
   }
@@ -84,6 +140,7 @@ const App = () => {
 
   return (
     <div>
+      <Message message={message} error={error} />
       <h2>Phonebook</h2>
       <Search value={newSearch} handleSearchChange={handleSearchChange} />
 
