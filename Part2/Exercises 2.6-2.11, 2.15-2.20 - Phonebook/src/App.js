@@ -51,7 +51,7 @@ const App = () => {
     e.preventDefault();
 
     if (persons.some(person => person.name === newName)) {
-      if (window.confirm(`${newName} is already added to phonebook. Do you want to replace the old number with a new one?`)) {
+      if (window.confirm(`${newName} is already added to phonebook! Do you want to replace the old number with a new one?`)) {
         const p = persons.find(p => p.name === newName)
         const changedPerson = { ...p, number: newNumber }
         const id = p.id
