@@ -38,7 +38,6 @@ const App = () => {
     person.name.toLowerCase().includes(newSearch.toLowerCase()))
 
   const hook = () => {
-    console.log('effect')
     contactService
       .getAll()
       .then(people => {
@@ -47,20 +46,19 @@ const App = () => {
   }
   useEffect(hook, [])
 
-  const addName = (e) => {
+  const addName = e => {
     e.preventDefault();
-
+    const contact = persons.find(p => p.name === newName)
     if (persons.some(person => person.name === newName)) {
       if (window.confirm(`${newName} is already added to phonebook! Do you want to replace the old number with a new one?`)) {
-        const p = persons.find(p => p.name === newName)
-        const changedPerson = { ...p, number: newNumber }
-        const id = p.id
-        console.log("This is the frontend");
+        const changedPerson = { ...contact, number: newNumber }
+        const id = contact.id
         contactService
           .update(id, changedPerson)
           .then(returnedPerson => {
-            console.log("This is what axios returns: ", returnedPerson);
             setPersons(persons.map(p => p.id !== id ? p : returnedPerson))
+            setNewName('')
+            setNewNumber('')
             setMessage(
               `New number put for ${newName}`
             )
@@ -72,8 +70,6 @@ const App = () => {
             setMessage(
               `Information of '${newName}' has already been removed from server`
             )
-            console.log("The updated person: ", changedPerson);
-            console.log("The list now: ", persons);
             setError(true)
             setTimeout(() => {
               setMessage(null)
@@ -102,13 +98,14 @@ const App = () => {
         })
         .catch(error => {
           setMessage(
-            `Information of '${newName}' has already been removed from server`
+            error.response.data.error
           )
           setError(true)
           setTimeout(() => {
             setMessage(null)
             setError(false)
           }, 5000)
+          setPersons(persons.filter(p => p.id !== contact.id))
         })
     }
   }
@@ -132,8 +129,14 @@ const App = () => {
       contactService
         .remove(contactToDelete.id)
         .then(() =>
+          setMessage(
+            `Removed ${contactToDelete.name} from the phonebook`
+          ),
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000),
           setPersons(persons.filter(p =>
-            p.name !== contactToDelete.name
+            p.id !== contactToDelete.id
           ))
         )
 
