@@ -55,10 +55,11 @@ const App = () => {
         const p = persons.find(p => p.name === newName)
         const changedPerson = { ...p, number: newNumber }
         const id = p.id
-
+        console.log("This is the frontend");
         contactService
           .update(id, changedPerson)
           .then(returnedPerson => {
+            console.log("This is what axios returns: ", returnedPerson);
             setPersons(persons.map(p => p.id !== id ? p : returnedPerson))
             setMessage(
               `New number put for ${newName}`
@@ -71,6 +72,8 @@ const App = () => {
             setMessage(
               `Information of '${newName}' has already been removed from server`
             )
+            console.log("The updated person: ", changedPerson);
+            console.log("The list now: ", persons);
             setError(true)
             setTimeout(() => {
               setMessage(null)
@@ -87,7 +90,7 @@ const App = () => {
       contactService
         .add(nameObject)
         .then(returnedPerson => {
-          setPersons(persons.concat(nameObject))
+          setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
           setMessage(

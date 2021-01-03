@@ -13,6 +13,7 @@ const add = newPerson => {
 
 const update = (id, person) => {
   const request = axios.put(`${baseUrl}/${id}`, person)
+  console.log("This is axios request: ", request);
   return request.then(response => response.data)
 }
 
