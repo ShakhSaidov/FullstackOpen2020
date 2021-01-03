@@ -1,3 +1,3 @@
-## FullstackOpen2020 Part3 - Phonebook
+## Phonebook App
 
-App deployed and can be viewed here: [phonebook](https://shakh-phonebook.herokuapp.com/)
+App is deployed and can be viewed here: [phonebook](https://shakh-phonebook.herokuapp.com/)
