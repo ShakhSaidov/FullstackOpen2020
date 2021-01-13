@@ -1,9 +1,8 @@
-PUT http://localhost:3003/api/blogs/5ff7ca91291d6505e084611d
+POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "title": "Title",
-    "author": "Author",
-    "url": "http://google.com",
-    "likes": "10"
+    "username": "Shakh01",
+    "name": "Shakh Saidov",
+    "password": "qwerty"
 }
