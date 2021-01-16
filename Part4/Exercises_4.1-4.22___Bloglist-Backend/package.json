@@ -6,7 +6,10 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+    "buildFront": "rm -rf build && cd ../../Part5/Exercises_5.1-5.5___Bloglist-Frontend && npm run build --prod && cp -r build ../../Part4/Exercises_4.1-4.22___Bloglist-Backend",
+    "deployHeroku": "git push heroku master",
+    "deploy": "npm run buildFront && git add . && git commit -m build"
   },
   "author": "Shakh Saidov",
   "license": "ISC",
