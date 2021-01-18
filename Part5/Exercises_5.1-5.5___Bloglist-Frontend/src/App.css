@@ -1,3 +1,61 @@
+.error {
+  color: rgb(197, 0, 0);
+  background: rgb(209, 180, 173);
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.notification {
+  color: rgb(0, 192, 0);
+  background: rgb(145, 212, 175);
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+label{
+  display: inline-block;
+  width: 75px;
+}
+
+input {
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.LoginButton {
+  background-color: rgb(208, 220, 255);
+  border-color: rgb(21, 21, 150);
+  color:rgb(9, 5, 65);
+  padding: 6px 12px;
+  display: inline-block;
+  font-size: 15px;
+  position: relative;
+  text-align: center;
+  top: 10px;
+  width: 95px;
+  margin-bottom: 30px;
+}
+
+.Centralized{
+  text-align: center;
+}
+
+button:hover {
+  background-color: rgb(113, 149, 255);
+}
+
+button:active {
+  background-color: rgb(37, 91, 255);
+  box-shadow: 0 2px rgb(88, 106, 160);
+  transform: translateY(3px);
+}
+
 .App {
   text-align: center;
 }

@@ -1,7 +1,7 @@
 import React from 'react'
-const Blog = ({ blog }) => (
+const Blog = ({ blog, number}) => (
   <div>
-    {blog.title} {blog.author}
+    <b>{number}.</b> "{blog.title}" by {blog.author}
   </div>
 )
 
