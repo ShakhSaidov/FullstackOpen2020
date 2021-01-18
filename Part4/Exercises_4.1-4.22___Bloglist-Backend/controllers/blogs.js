@@ -20,7 +20,7 @@ blogsRouter.post('/', async (request, response) => {
   }
   const user = await User.findById(decodedToken.id)
 
-  if (body.title === undefined || body.url === undefined) {
+  if (body.title === '' || body.url === '') {
     return response.status(400).json({ error: 'content missing' })
   }
 
