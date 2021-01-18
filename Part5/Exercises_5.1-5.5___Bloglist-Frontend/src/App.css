@@ -1,6 +1,6 @@
 .error {
-  color: rgb(197, 0, 0);
-  background: rgb(209, 180, 173);
+  color: rgb(175, 0, 0);
+  background: rgb(216, 172, 161);
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
@@ -9,8 +9,8 @@
 }
 
 .notification {
-  color: rgb(0, 192, 0);
-  background: rgb(145, 212, 175);
+  color: rgb(0, 168, 0);
+  background: rgb(148, 211, 176);
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
