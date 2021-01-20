@@ -1,17 +1,20 @@
 import React, { useState } from 'react'
 import '../App.css'
 
-const Details = ({blog}) => {
+const Details = ({blog, handleLikes}) => {
   return(
     <div>
       <div>{blog.url}</div>
-      <div>Likes: {blog.likes}</div>
+      <div>
+        Likes: {blog.likes}
+        <button onClick={handleLikes}>like</button>
+      </div>
       <div>{blog.author}</div>
     </div>
   )
 }
 
-const Blog = ({ blog, number }) => {
+const Blog = ({ blog, number, handleLikes}) => {
   const [show, setShow] = useState(false)
 
   const handleBlogDetails = () => {
@@ -27,7 +30,7 @@ const Blog = ({ blog, number }) => {
         </button>
       </div>
       {show
-        ? <Details blog={blog}/>
+        ? <Details blog={blog} handleLikes={handleLikes}/>
         : null
       }
     </div>

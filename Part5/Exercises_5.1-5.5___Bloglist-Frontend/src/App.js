@@ -97,6 +97,11 @@ const App = () => {
     setUser(null)
   }
 
+  //function that increases the likes of a blog
+  const handleLikes = async (event) => {
+
+  }
+
   //function that shows the blogs
   const blogForm = () => (
     <div>
