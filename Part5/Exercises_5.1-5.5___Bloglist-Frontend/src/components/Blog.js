@@ -7,7 +7,7 @@ const Details = ({blog, handleLikes}) => {
       <div>{blog.url}</div>
       <div>
         Likes: {blog.likes}
-        <button onClick={handleLikes}>like</button>
+        <button onClick={(event) => handleLikes(event, blog.id)}>like</button>
       </div>
       <div>{blog.author}</div>
     </div>

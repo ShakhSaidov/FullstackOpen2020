@@ -98,7 +98,28 @@ const App = () => {
   }
 
   //function that increases the likes of a blog
-  const handleLikes = async (event) => {
+  const handleLikes = async (event, id) => {
+    event.preventDefault();
+    const blogToUpdate = blogs.find(blog => blog.id === id)
+
+      const updatedBlog = {
+        ...blogToUpdate,
+        likes: blogToUpdate.likes + 1,
+        user: blogToUpdate.user.id,
+      }
+
+      try {
+        const response = await blogService.update(id, updatedBlog)
+        setBlogs(blogs.map(blog => blog.id === id ? response : blog))
+
+      } catch (error) {
+        setMessage(`${error}`)
+        setErrorState(true)
+        setTimeout(() => {
+          setMessage(null)
+          setErrorState(false)
+        }, 5000)
+      }
 
   }
 
@@ -112,7 +133,7 @@ const App = () => {
       </div>
       <h2 className="Centralized">Blogs by {user.username}</h2>
       {blogs.map((blog, index) =>
-        <Blog key={blog.id} blog={blog} number={index + 1} />
+        <Blog key={blog.id} blog={blog} number={index + 1} handleLikes={handleLikes} />
       )}
       {newBlogForm()}
     </div>
