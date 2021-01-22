@@ -36,8 +36,10 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       user === null
-        ? setBlogs(blogs)
-        : setBlogs(blogs.filter(blog => blog.user.username === user.username))
+        ? setBlogs(blogs.sort((a, b) => b.likes - a.likes))
+        : setBlogs(blogs
+                      .filter(blog => blog.user.username === user.username)
+                      .sort((a, b) => b.likes - a.likes))
     )
   }, [user])
 
