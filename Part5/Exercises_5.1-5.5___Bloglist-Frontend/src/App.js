@@ -133,7 +133,12 @@ const App = () => {
       </div>
       <h2 className="Centralized">Blogs by {user.username}</h2>
       {blogs.map((blog, index) =>
-        <Blog key={blog.id} blog={blog} number={index + 1} handleLikes={handleLikes} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          number={index + 1}
+          handleLikes={handleLikes}
+        />
       )}
       {newBlogForm()}
     </div>
