@@ -29,6 +29,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [errorState, setErrorState] = useState(false)
+  const [likesChanged, setLikesChanged] = useState(false)
 
   const blogFormRef = useRef()
 
@@ -38,10 +39,12 @@ const App = () => {
       user === null
         ? setBlogs(blogs.sort((a, b) => b.likes - a.likes))
         : setBlogs(blogs
-                      .filter(blog => blog.user.username === user.username)
-                      .sort((a, b) => b.likes - a.likes))
+          .filter(blog => blog.user.username === user.username)
+          .sort((a, b) => b.likes - a.likes))
     )
-  }, [user])
+
+    setLikesChanged(false)
+  }, [user, likesChanged])
 
   //effect for setting the user after login
   useEffect(() => {
@@ -104,25 +107,46 @@ const App = () => {
     event.preventDefault();
     const blogToUpdate = blogs.find(blog => blog.id === id)
 
-      const updatedBlog = {
-        ...blogToUpdate,
-        likes: blogToUpdate.likes + 1,
-        user: blogToUpdate.user.id,
-      }
+    const updatedBlog = {
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 1,
+      user: blogToUpdate.user.id,
+    }
 
+    try {
+      const response = await blogService.update(id, updatedBlog)
+      setBlogs(blogs.map(blog => blog.id === id ? response : blog))
+      setLikesChanged(true)
+    } catch (error) {
+      setMessage(`${error}`)
+      setErrorState(true)
+      setTimeout(() => {
+        setMessage(null)
+        setErrorState(false)
+      }, 5000)
+    }
+  }
+
+  //function that remove a blog
+  const handleRemoval = async (event, id) => {
+    event.preventDefault()
+    const blogToRemove = blogs.find(blog => blog.id === id)
+
+    if (window.confirm(`Do you really want to remove the blog "${blogToRemove.title}" by ${blogToRemove.author}?`)) {
       try {
-        const response = await blogService.update(id, updatedBlog)
-        setBlogs(blogs.map(blog => blog.id === id ? response : blog))
-
+        await blogService.remove(id)
+        setMessage(`Blog "${blogToRemove.title}" by ${blogToRemove.author} has been removed`)
       } catch (error) {
-        setMessage(`${error}`)
+        setMessage("Could not add the blog. Make sure the content meets the requirement of each")
         setErrorState(true)
-        setTimeout(() => {
-          setMessage(null)
-          setErrorState(false)
-        }, 5000)
       }
 
+      setTimeout(() => {
+        setMessage(null)
+        setErrorState(false)
+      }, 5000)
+      setBlogs(blogs.filter(blog => blog.id !== id))
+    }
   }
 
   //function that shows the blogs
@@ -140,6 +164,7 @@ const App = () => {
           blog={blog}
           number={index + 1}
           handleLikes={handleLikes}
+          handleRemoval={handleRemoval}
         />
       )}
       {newBlogForm()}
