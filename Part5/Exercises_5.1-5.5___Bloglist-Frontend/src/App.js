@@ -184,11 +184,8 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     console.log(newBlogObject);
     try {
-      blogService
-        .create(newBlogObject)
-        .then(returnedBlog => {
-          setBlogs(blogs.concat(returnedBlog))
-        })
+      const returnedBlog = await blogService.create(newBlogObject)
+      setBlogs(blogs.concat(returnedBlog))
       setMessage(`New Blog: ${newBlogObject.title} by ${newBlogObject.author} has been added`)
     } catch (error) {
       setMessage("Could not add the blog. Make sure the content meets the requirement of each")
