@@ -5,12 +5,12 @@ import PropTypes from 'prop-types'
 const Details = ({blog, handleLikes, handleRemoval}) => {
   return(
     <div>
-      <div>{blog.url}</div>
+      <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>
       <div>
         Likes: {blog.likes}
         <button onClick={(event) => handleLikes(event, blog.id)}>like</button>
       </div>
-      <div>{blog.author}</div>
+      <div>By: {blog.author}</div>
       <button onClick={(event) => handleRemoval(event, blog.id)}>remove</button>
     </div>
   )

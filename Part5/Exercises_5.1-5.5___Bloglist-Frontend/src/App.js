@@ -137,7 +137,8 @@ const App = () => {
         await blogService.remove(id)
         setMessage(`Blog "${blogToRemove.title}" by ${blogToRemove.author} has been removed`)
       } catch (error) {
-        setMessage("Could not add the blog. Make sure the content meets the requirement of each")
+        setMessage("Could not remove the blog for some reason.")
+        console.log(error);
         setErrorState(true)
       }
 
