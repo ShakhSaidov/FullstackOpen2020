@@ -1,4 +1,4 @@
-# FullstackOpen2020 Course provided by University of Helsinki 
+# University of Helsinki - FullstackOpen2020 Course
 Learned:
 - Working on the frontend with React using React Hooks
 - Working on the backend with Node & Express
