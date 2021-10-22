@@ -1,5 +1,6 @@
 import React from "react";
 import { addNew } from "../reducers/anecdoteReducer";
+import { addMessage, emptyMessage } from "../reducers/notificationReducer";
 import { useDispatch } from "react-redux";
 
 const AnecdoteForm = () => {
@@ -9,6 +10,10 @@ const AnecdoteForm = () => {
     event.preventDefault();
     const newAnecdote = event.target.anecdote.value;
     dispatch(addNew(newAnecdote));
+    dispatch(addMessage(newAnecdote));
+    setTimeout(() => {
+      dispatch(emptyMessage());
+    }, 5000);
   };
 
   return (
@@ -24,4 +29,4 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm
+export default AnecdoteForm;
