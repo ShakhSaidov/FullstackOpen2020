@@ -4,12 +4,15 @@ import { addNew, voteUp } from "./reducers/anecdoteReducer";
 
 const App = () => {
   const anecdotes = useSelector((state) => state);
+
+  anecdotes.sort((a, b) => b.votes - a.votes);
+
   const dispatch = useDispatch();
 
   const vote = (id) => dispatch(voteUp(id));
 
   const addAnecdote = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const newAnecdote = event.target.anecdote.value;
     dispatch(addNew(newAnecdote));
   };
@@ -17,9 +20,11 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map((anecdote) => (
-        <div key={anecdote.id}>
-          <div>{anecdote.content}</div>
+      {anecdotes.map((anecdote, index) => (
+        <div key={anecdote.id} style={{marginBottom: '10px'}}>
+          <div>
+            {index + 1}. {anecdote.content}
+          </div>
           <div>
             has {anecdote.votes}
             <button onClick={() => vote(anecdote.id)}>vote</button>
