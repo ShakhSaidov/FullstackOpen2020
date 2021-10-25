@@ -3,7 +3,7 @@ import {
   Switch,
   Route,
   Link,
-  useParams,
+  Redirect,
   useRouteMatch,
 } from "react-router-dom";
 
@@ -104,16 +104,16 @@ const CreateNew = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content,
-      author,
-      info,
+      content: content,
+      author: author,
+      info: info,
       votes: 0,
     });
   };
 
   return (
     <div>
-      <h2>create a new anecdote</h2>
+      <h2>Create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
           content
@@ -163,11 +163,19 @@ const App = () => {
     },
   ]);
 
+  const [addedNew, setAddedNew] = useState(false)
   const [notification, setNotification] = useState("");
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
+    console.log("anecdotes now: ", anecdotes)
+
+    setAddedNew(true)
+    setTimeout(() => {setAddedNew(false)}, 1)
+  
+    setNotification("A new anecdote '" + anecdote.content + "' is created!")
+    setTimeout(() => {setNotification("")}, 5000)
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -192,9 +200,10 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <div>{notification}</div>
       <Switch>
         <Route path="/new">
-          <CreateNew addNew={addNew} />
+          {addedNew ? <Redirect to="/"/> : <CreateNew addNew={addNew} />}
         </Route>
         <Route path="/about">
           <About />
