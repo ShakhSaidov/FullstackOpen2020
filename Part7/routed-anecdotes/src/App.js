@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import {
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  useRouteMatch,
-} from "react-router-dom";
+import { useField } from "./hooks";
+import { Switch, Route, Link, Redirect, useRouteMatch } from "react-router-dom";
+import { pick } from "lodash";
 
 const Menu = () => {
   const padding = {
@@ -97,19 +93,31 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const content = useField("content");
+  const author = useField("author");
+  const info = useField("info");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.addNew({
-      content: content,
-      author: author,
-      info: info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0,
     });
   };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
+  const contentInput = pick(content, 'type', 'value', 'onChange')
+  const authorInput = pick(author, 'type', 'value', 'onChange')
+  const infoInput = pick(info, 'type', 'value', 'onChange')
+
 
   return (
     <div>
@@ -117,30 +125,20 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input {...contentInput} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input {...authorInput} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
+          <input {...infoInput}
           />
         </div>
         <button>create</button>
       </form>
+      <button onClick={handleReset}>reset</button>
     </div>
   );
 };
@@ -163,19 +161,23 @@ const App = () => {
     },
   ]);
 
-  const [addedNew, setAddedNew] = useState(false)
+  const [addedNew, setAddedNew] = useState(false);
   const [notification, setNotification] = useState("");
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
-    console.log("anecdotes now: ", anecdotes)
+    console.log("anecdotes now: ", anecdotes);
 
-    setAddedNew(true)
-    setTimeout(() => {setAddedNew(false)}, 1)
-  
-    setNotification("A new anecdote '" + anecdote.content + "' is created!")
-    setTimeout(() => {setNotification("")}, 5000)
+    setAddedNew(true);
+    setTimeout(() => {
+      setAddedNew(false);
+    }, 1);
+
+    setNotification("A new anecdote '" + anecdote.content + "' is created!");
+    setTimeout(() => {
+      setNotification("");
+    }, 5000);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -191,10 +193,10 @@ const App = () => {
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
 
-  const match = useRouteMatch('/anecdotes/:id')
-  const anecdote = match 
-    ? anecdotes.find(a => a.id === Number(match.params.id))
-    : null
+  const match = useRouteMatch("/anecdotes/:id");
+  const anecdote = match
+    ? anecdotes.find((a) => a.id === Number(match.params.id))
+    : null;
 
   return (
     <div>
@@ -203,7 +205,7 @@ const App = () => {
       <div>{notification}</div>
       <Switch>
         <Route path="/new">
-          {addedNew ? <Redirect to="/"/> : <CreateNew addNew={addNew} />}
+          {addedNew ? <Redirect to="/" /> : <CreateNew addNew={addNew} />}
         </Route>
         <Route path="/about">
           <About />
