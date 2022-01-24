@@ -132,7 +132,7 @@ const CreateNew = (props) => {
           <input {...authorInput} />
         </div>
         <div>
-          url for more info
+          url for more info (test)
           <input {...infoInput}
           />
         </div>
