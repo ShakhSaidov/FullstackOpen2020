@@ -8,4 +8,6 @@ Learned:
 - End-to-end testing
 - Using Redux in React
 - Styling React with Material UI
+
+Learning:
 - GraphQL
