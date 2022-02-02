@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
+const { v4: uuidv4 } = require('uuid')
 
 let authors = [
   {
@@ -105,8 +106,22 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String!, genre: String!): [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+  }
+
+  type Mutation {
+    addBook(
+      title: String!,
+      author: String!,
+      published: Int!,
+      genres: [String!]!
+    ): Book
+
+    editAuthor(
+      name: String!,
+      setBornTo: Int!
+    ): Author
   }
 `;
 
@@ -115,15 +130,55 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-        if(!args.author) return books
+        if(args.author && args.genre) return books.filter(book => book.author === args.author && book.genres.includes(args.genre))
 
-        return books.filter(book => book.author === args.author)
+        else if(args.author) return books.filter(book => book.author === args.author)
+
+        else if (args.genre) return books.filter(book => book.genres.includes(args.genre))
+
+        else return books
     },
     allAuthors: () => authors.map(author => {
         count = books.filter(book => book.author === author.name).length
         return {...author, bookCount: count}
     })
   },
+
+  Mutation: {
+    addBook: (root, args) => {
+      const newBook = {...args, id: uuidv4()}
+      
+      if(!authors.find(author => author.name === newBook.author)){
+        authors = authors.concat({    
+          name: newBook.author,
+          id: uuidv4()
+        })
+      }
+
+      books = books.concat(newBook)
+      return newBook
+    },
+
+    editAuthor: (root, args) => {
+      const authorToChange = args.name
+      const newBornDate = args.setBornTo
+
+      let changedAuthor
+
+      if(authors.find(author => author.name === authorToChange)){
+        const newAuthors = authors.map(author => {
+          if(author.name === authorToChange) {
+            author.born = newBornDate
+            changedAuthor = author
+          }
+        })
+
+        return changedAuthor
+      } 
+      
+      return null
+    }
+  }
 };
 
 const server = new ApolloServer({
